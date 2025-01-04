@@ -1,0 +1,303 @@
+{% load static %}
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>update</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="{% static 'style.css' %}">
+   <style>
+      .logout-btn {
+         background-color: #ff6b6b;
+         color: white;
+         border: none;
+         padding: 12px 25px;
+         border-radius: 30px;
+         font-size: 16px;
+         display: inline-flex;
+         align-items: center;
+         cursor: pointer;
+         transition: all 0.3s ease-in-out;
+      }
+
+      /* Style the logout button */
+      .logout-btn {
+         background-color: #ff6b6b;
+         color: white;
+         position: relative;
+         top: 400px;
+         left: 55px;
+         margin: 25px auto;
+         border: none;
+         padding: 12px 25px;
+         border-radius: 30px;
+         font-size: 16px;
+         display: inline-flex;
+         align-items: center;
+         cursor: pointer;
+         transition: all 0.3s ease-in-out;
+      }
+
+      .logout-btn:hover {
+         background-color: #ff3b3b;
+         box-shadow: 0 5px 15px rgba(255, 107, 107, 0.5);
+         transform: scale(1.05);
+      }
+
+      #logoutButton {
+         padding: 20px 10px;
+         width: 100px;
+         text-align: center;
+         position: relative;
+         top: 300px;
+
+      }
+
+      /* Notification style */
+      .notification {
+         display: none;
+         position: fixed;
+         bottom: 20px;
+         right: 20px;
+         background-color: #28a745;
+         color: white;
+         padding: 10px 20px;
+         border-radius: 5px;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+         z-index: 1000;
+      }
+
+      .notification.show {
+         display: block;
+      }
+
+
+      /* Show class for notification */
+      .notification.show {
+         opacity: 1;
+         bottom: 40px;
+         /* Small bounce effect */
+      }
+
+      #contact1212 {
+         /* position: relative; */
+         bottom: 100px;
+      }
+
+      #op12 {
+         color: white;
+      }
+   </style>
+
+</head>
+
+<body>
+
+   <header class="header">
+
+      <section class="flex">
+
+         <a href="" class="logo">UPDATE PROFILE</a>
+
+         <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+         </div>
+
+         <div class="profile">
+            <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-profile.jpg' %}{% endif %}" class="image" alt="">
+            <h3 class="name">{{ user.username }}</h3>
+            <p class="role">
+               {% if role_info %}
+                   {{ role_info.role }}
+               {% else %}
+                   No Role
+               {% endif %}
+           </p>
+            <a href="{% url 'profile'%}" class="btn">view profile</a>
+            <div class="flex-btn">
+               <a href="{% url 'userlogin' %}" class="option-btn">login</a>
+               <a href="{% url 'userlogin' %}" class="option-btn">register</a>
+            </div>
+         </div>
+
+      </section>
+
+   </header>
+
+   <div class="side-bar">
+
+      <div id="close-btn">
+         <i class="fas fa-times"></i>
+      </div>
+
+      <div class="profile">
+         <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-profile.jpg' %}{% endif %}" class="image" alt="user-image">
+         <h3 class="name">{{ user.username }}</h3>
+         <p class="role">
+            {% if role_info %}
+                {{ role_info.role }}
+            {% else %}
+                No Role
+            {% endif %}
+        </p>
+         <a href="{% url 'profile'%}" class="btn">view profile</a>
+      </div>
+
+      <nav class="navbar">
+         <a href="{% if user.is_authenticated %}
+               {% if user.volunteer %}
+                   {% url 'volunteer' %}
+               {% elif user.coordinator %}
+                   {% url 'coordinator' %}
+               {% elif user.secretary %}
+                   {% url 'secretary' %}
+               {% else %}
+                   {% url 'profile' %}
+               {% endif %}
+           {% else %}
+               {% url 'login' %}
+           {% endif %}">
+            i class="fas fa-home"></i><span>home</span></a>
+         <a href=""><i class="fas fa-question"></i><span>Event</span></a>
+         <a href=""><i class="fas fa-headset"></i><span>contact us</span></a>
+         <button id="logoutButton" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+         </button>
+      </nav>
+
+   </div>
+
+   <section class="form-container">
+
+      <form action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+         <h3>Update Profile</h3>
+         <p>Update Name</p>
+         <input type="text" name="name" maxlength="50" class="box" value={{ user.username }}>
+         <p>Update Email</p>
+         <input type="email" name="email" maxlength="50" class="box" value={{ user.email }}>
+         <p>Enter your password</p>
+         <input type="password" name="old_pass" maxlength="20" class="box">
+         <p>Do you want to change your password?<br>New Password</p>
+         <input type="password" name="new_pass" maxlength="20" class="box">
+         <p>Confirm Password</p>
+         <input type="password" name="c_pass" maxlength="20" class="box">
+         <p>Current Profile Picture</p>
+         <div class="image-preview">
+             {% if profile_picture %}
+               <img id="currentImg" src="{{ role_info.profile_picture.url }}" alt="Current Profile Picture" style="width: 150px; height: 150px; object-fit: cover;">
+             {% else %}
+               <img id="currentImg" src="{% static 'images/default-profile.jpg' %}" alt="No Profile Picture" style="width: 150px; height: 150px; object-fit: cover;">
+             {% endif %}
+         </div>
+         <p>Update Picture</p>
+         <input type="file" accept="image/*" name="profile_pic" class="box" id="imgInput" onchange="previewImage()">
+
+         <input type="submit" value="update profile" name="submit" class="btn">
+      </form>
+
+      <!-- Contact Us Section -->
+      <div id="contactUsContent" class="content-section" style="display: none;">
+         <section class="contact">
+            <div class="box-container" style="padding-top: 10%;">
+               <div class="box">
+                  <i class="fas fa-phone"></i>
+                  <h3>Phone Number</h3>
+                  <a href="tel:1234567890">123-456-7890</a>
+                  <a href="tel:1112223333">111-222-3333</a>
+               </div>
+
+               <div class="box">
+                  <i class="fas fa-envelope"></i>
+                  <h3>Email Address</h3>
+                  <a href="mailto:DJDGIFNGNI@gmail.com">JGFNSGI@gmail.com</a>
+                  <a href="mailto:JDGSNKFD@gmail.com">JFSHGUIHFS@gmail.com</a>
+               </div>
+
+               <div class="box">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <h3>Office Address</h3>
+                  <a href="#">Flat No. 1, A-1 Building, Jogeshwari, Mumbai, India - 400104</a>
+               </div>
+            </div>
+         </section>
+      </div>
+
+
+
+   </section>
+
+   <script>
+      // Sidebar Toggle Functionality
+      let sideBar = document.querySelector('.side-bar');
+      let menuBtn = document.getElementById('menu-btn');
+      let closeBtn = document.getElementById('close-btn');
+      let body = document.body;
+
+      menuBtn?.addEventListener('click', () => {
+         sideBar.classList.toggle('active');
+         body.classList.toggle('active');
+      });
+
+
+      closeBtn?.addEventListener('click', () => {
+         sideBar.classList.remove('active');
+         body.classList.remove('active');
+      });
+
+
+      window.addEventListener('resize', () => {
+         if (window.innerWidth >= 1200) {
+            sideBar.classList.remove('active');
+            body.classList.remove('active');
+         }
+      });
+
+      // Logout Button Functionality
+      document.getElementById('logoutButton').addEventListener('click', function () {
+         // Display the notification
+         const notification = document.getElementById('notification');
+         notification.classList.add('show');
+
+         setTimeout(() => {
+            notification.classList.remove('show');
+         }, 3000);
+
+         // Simulate a logout process (redirect to login page)
+         setTimeout(() => {
+            window.location.href = 'login.html'; // Redirect to login page
+         }, 1000); // Wait 1 second before redirect
+      });
+
+      function previewImage() {
+         var file = document.getElementById("imgInput").files[0]; 
+         var preview = document.getElementById("newImgPreview"); 
+     
+         if (file) {
+             var reader = new FileReader();
+     
+             reader.onload = function(e) {
+                 preview.src = e.target.result;
+                 preview.style.display = "block";
+             }
+     
+             reader.readAsDataURL(file);  
+         }
+     }
+     
+
+   </script>
+
+   <!-- custom js file link  -->
+   <script src="js/script.js"></script>
+
+
+</body>
+
+</html>

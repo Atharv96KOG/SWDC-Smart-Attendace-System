@@ -1,0 +1,540 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>courses</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static 'styles.css'%}">
+    <style>,
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #234d20;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .box-container {
+            width: 95%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header#head {
+            background-color: #234d20;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .dashboard-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        
+        .dashboard-btn {
+            display: block;
+            width: 100%;
+            background-color: #c9df8a;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .dashboard-btn:hover {
+            background-color: #234d20;
+        }
+        
+        
+        .activity-select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            
+        
+        }
+        
+        
+        .options-section {
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .D-container {
+            text-align: center;
+        
+        }
+        
+        .D-container h1 {
+            margin: 10px;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .wrapper {
+            display: flex;
+            text-align: center;
+        }
+        
+        h1,
+        h2 {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .sidebar {
+            background-color: #c9df8a;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        
+        .content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            background-color: #ffffff;
+            /* You can change this to #232d20 if you want a darker dashboard content area */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        
+        .sidebar ul {
+            list-style-type: none;
+            padding: 20px;
+        }
+        
+        .sidebar ul li {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: #232d20;
+            padding-left: 10px;
+        }
+        
+        .close-btn {
+            background-color: transparent;
+            color: white;
+            border: none;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /*/////////////////////////////////////*/
+        h1,
+        h2 {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .container {
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            /* text-align: center; */
+        }
+        
+        header {
+            background-color: #234d20;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background-color: #c9df8a;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #234d20;
+        }
+        
+        #qrCodeSection {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        #qrCodeImage {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+        
+            h2 {
+                font-size: 1.3em;
+            }
+        
+            select,
+            button {
+                font-size: 1em;
+                padding: 10px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            h2 {
+                font-size: 1.2em;
+            }
+        
+            select,
+            button {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+        }
+        
+        .D_content {
+            text-align: center;
+        }
+        
+        
+        header#head {
+            background-color: #234d20;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        #how{
+            box-shadow: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <section class="flex">
+
+            <a href="" class="logo">Hello, {{ user.username }} !!</a>
+
+            <div class="icons">
+                <div id="menu-btn" class="fas fa-bars"></div>
+
+            </div>
+
+            <div class="profile">
+                <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-profile.jpg' %}{% endif %}" class="image" alt="user-image">
+                <h3 class="name">{{ user.username }}</h3>
+                <p class="role">
+                    {% if role_info %}
+                        {{ role_info.role }}
+                    {% else %}
+                        No Role
+                    {% endif %}
+                </p>
+                <a href="{% url 'profile'%}" class="btn">view profile</a>
+                <div class="flex-btn">
+                    <a href="{% url 'userlogin'%}" class="option-btn">login</a>
+                    <a href="{% url 'userlogin'%}" class="option-btn">register</a>
+                </div>
+            </div>
+
+        </section>
+
+    </header>
+
+    <div class="side-bar">
+
+        <div id="close-btn">
+            <i class="fas fa-times"></i>
+        </div>
+
+        <div class="profile">
+            <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-profile.jpg' %}{% endif %}" class="image" alt="user-image">
+                <h3 class="name">{{ user.username }}</h3>
+                <p class="role">
+                    {% if role_info %}
+                        {{ role_info.role }}
+                    {% else %}
+                        No Role
+                    {% endif %}
+                </p>
+            <a href="{% url 'profile'%}" class="btn">view profile</a>
+        </div>
+
+        <nav class="navbar">
+            <a href="" id="D_content"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="coordinators.html" id="eventsLink"><i class="fas fa-calendar-alt"></i>Events</a>
+            <a href="contact.html" id="contact"><i class="fas fa-headset"></i><span>Contact us</span></a>
+            <form id="logoutForm" method="POST" action="{% url 'logout_view' %}">
+                {% csrf_token %}
+                <button type="submit" id="logoutButton" class="logout-btn">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                </button>
+            </form>
+        </nav>
+
+    </div>
+
+    <section class="courses">
+        <div class="box-container">
+            <header id="head">
+                Coordinator Dashboard
+            </header>
+            <div id="dashboardContent">
+                <div class="D-container container" id="D-container">
+                    <h1 style="font-size: 19px; font-weight: bold;"  >WELCOME TO SW&D</h1>
+                    <p style="font-size: 14px;">WE ARE THE VIT SOCIALS <br> WORKING FOR SOCIETY</p>
+                </div>
+            </div>
+
+            <!-- Activity -->
+            <div class="container" id="Activity" >
+                {% if not coordinator.qr_code %}
+                <form method="POST" action="{% url 'generate_qr' %}">
+                    {% csrf_token %}
+                    <select name="activity" id="activitySelec" required>
+                        <option value="">Select an activity</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="seminar">Seminar</option>
+                        <option value="meetup">Meetup</option>
+                    </select>
+                    
+                    <button type="submit">Generate QR Code</button>
+                </form>
+                <div>
+                    
+                {% else %}
+                <p>Scan this QR code to mark your attendance for {{ coordinator.activity }}</p>
+                    <img src="{{ coordinator.qr_code.url }}" alt="QR Code for {{ coordinator.activity }}">
+                {% endif %}
+                </div>
+            </div>
+
+            <!-- Contact Us Section -->
+            <div id="contactUsContent" class="content-section" style="display: none;">
+                <section class="contact">
+                    <div  id="how" class="box-container" style="padding-top: 10%;">
+                        <div class="box">
+                            <i class="fas fa-phone"></i>
+                            <h3>Phone Number</h3>
+                            <a href="tel:1234567890">123-456-7890</a>
+                            <a href="tel:1112223333">111-222-3333</a>
+                        </div>
+          
+                        <div class="box">
+                            <i class="fas fa-envelope"></i>
+                            <h3>Email Address</h3>
+                            <a href="mailto:DJDGIFNGNI@gmail.com">JGFNSGI@gmail.com</a>
+                            <a href="mailto:JDGSNKFD@gmail.com">JFSHGUIHFS@gmail.com</a>
+                        </div>
+          
+                        <div class="box">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h3>Office Address</h3>
+                            <a href="#">Flat No. 1, A-1 Building,Jogeshwari,Mumbai,India-400104</a>
+                        </div>
+                    </div>
+                </section>
+             </div>
+             
+
+            <div id="notification" class="notification">Logged out successfully!</div>
+    </section>
+    <script>
+
+    
+        function resetSelection() {
+            document.getElementById('Activity').style.display = 'block';
+            document.getElementById('qrCodeSection').style.display = 'none';
+        }
+
+        function resetSelection() {
+            document.getElementById('activitySelect').value = '';
+            document.getElementById('qrCodeSection').style.display = 'none';
+        }
+
+    </script>
+    <script>
+        // Sidebar Toggle Functionality
+        let sideBar = document.querySelector('.side-bar');
+        let menuBtn = document.getElementById('menu-btn');
+        let closeBtn = document.getElementById('close-btn');
+        let body = document.body;
+
+        // Toggle Sidebar on Menu Button Click
+        menuBtn?.addEventListener('click', () => {
+            sideBar.classList.toggle('active'); // Show/hide sidebar
+            body.classList.toggle('active'); // Adjust main content
+        });
+
+        // Close Sidebar on Close Button Click
+        closeBtn?.addEventListener('click', () => {
+            sideBar.classList.remove('active'); // Hide sidebar
+            body.classList.remove('active'); // Reset main content
+        });
+
+        // Close Sidebar when window is resized (optional, to handle desktop/mobile transitions)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1200) {
+                sideBar.classList.remove('active');
+                body.classList.remove('active');
+            }
+        });
+
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dashboardContent = document.getElementById("dashboardContent");
+            const Activity = document.getElementById('Activity');
+            const contactUsContent = document.getElementById("contactUsContent");
+
+            const dashboardLink = document.getElementById("D_content");
+            const contactLink = document.getElementById("contact");
+            const eventsLink = document.getElementById("eventsLink");
+
+            // Function to show content sections
+            function showContent(contentToShow) {
+                // Hide all sections
+                dashboardContent.style.display = "none";
+                Activity.style.display = "none";
+                contactUsContent.style.display = "none";
+
+                // Show only the selected section
+                contentToShow.style.display = "block";
+            }
+
+            // Event listeners for navigation links
+            contactLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                showContent(contactUsContent);
+            });
+
+            dashboardLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                showContent(dashboardContent);
+            });
+
+            eventsLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                showContent(Activity);
+            });
+
+            // Show dashboard by default
+            showContent(dashboardContent);
+        });
+
+        // Logout Button Functionality
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            e.preventDefault(); 
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+
+            setTimeout(() => {
+                document.getElementById('logoutForm').submit(); 
+            }, 1000);
+        });
+
+
+
+    </script>
+
+
+    </div>
+
+    </section>
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+
+
+</body>
+
+</html>

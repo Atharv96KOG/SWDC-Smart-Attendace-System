@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>SW&D</title>
+    <style>
+        * {
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('your-background-image.jpg');
+            /* Add your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Slightly transparent white background */
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .box-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            width: 180px;
+            height: 180px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+            position: relative;
+        }
+
+        .box-content {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .box:hover .box-content {
+            transform: translateY(0);
+        }
+
+        #coordinator-box {
+            background-color: #c9df8a;
+        }
+
+        #volunteer-box {
+            background-color: #c9df8a;
+
+        }
+
+        #secretary-box {
+            background-color: #c9df8a;
+
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Toast Notification */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadeIn 0.5s, fadeOut 0.5s 2.5s;
+            /* Show and hide */
+        }
+
+        @keyframes fadeIn {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 600px) {
+            .box {
+                width: 200px;
+                height: 200px;
+            }
+
+            .box-content {
+                font-size: 1.4em;
+            }
+
+            h1 {
+                font-size: 3em;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .box-container {
+                gap: 50px;
+            }
+
+            .box {
+                width: 220px;
+                height: 220px;
+            }
+
+            .box-content {
+                font-size: 1.5em;
+            }
+
+            h1 {
+                font-size: 3.5em;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+
+            .box-container {
+                gap: 60px;
+            }
+
+            .box {
+                width: 250px;
+                height: 250px;
+            }
+
+            .box-content {
+                font-size: 1.7em;
+            }
+
+            h1 {
+                font-size: 4em;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 id="greeting">Welcome to SW&D</h1>
+        <div class="box-container">
+            <div class="box" id="coordinator-box" onclick="showModal('coordinator')">
+                <div class="box-content">
+                    <a href="{% url 'userlogin' %}">
+                        <h3>Coordinators</h3>
+                    </a>
+                </div>
+            </div>
+            <div class="box" id="volunteer-box" onclick="showModal('volunteer')">
+                <div class="box-content">
+                    <a href="{% url 'userlogin'%}">
+                        <h3>Volunteers</h3>
+                    </a>
+                </div>
+            </div>
+            <div class="box" id="secretary-box" onclick="showModal('secretary')">
+                <div class="box-content">
+                    <a href="{% url 'userlogin' %}">
+                        <h3>Secretary</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="modal-text"></p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Action performed!</div>
+
+    <script>
+        // Dynamic Greeting Message
+        function updateGreeting() {
+            const greetingElement = document.getElementById('greeting');
+            const hours = new Date().getHours();
+            if (hours < 12) {
+                greetingElement.innerText = 'Good Morning! Welcome to VClass Portal';
+            } else if (hours < 18) {
+                greetingElement.innerText = 'Good Afternoon! Welcome to VClass Portal';
+            } else {
+                greetingElement.innerText = 'Good Evening! Welcome to VClass Portal';
+            }
+        }
+
+    </script>

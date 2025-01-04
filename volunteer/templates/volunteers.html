@@ -1,0 +1,437 @@
+{% load static %}
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>home</title>
+   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="{% static 'style.css' %}">
+   <link rel="stylesheet" href="{% static 'style_volunteer.css' %}">
+</head>
+<body>
+<header class="header">
+   
+   <section class="flex">
+
+      <a href="" class="logo">Hello, {{user.username}} !!</a>
+   
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+      </div>
+
+      <div class="profile">
+         <img src="images/pic-1.jpg" class="image" alt="">
+         <h3 class="name"></h3>
+         <p class="role">---</p>
+         <a href="{% url 'profile'%}" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="{% url 'userlogin'%}" class="option-btn">login</a>
+            <a href="{% url 'userlogin'%}" class="option-btn">register</a>
+         </div>
+      </div>
+
+   </section>
+
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img src="images/pic-1.jpg" class="image" alt="">
+      <h3 class="name"></h3>
+      <p class="role"></p>
+      <a href="{% url 'profile'%}" class="btn">view profile</a>
+   </div>
+
+   <nav class="navbar">
+        <a href="" id="D_content"><i class="fas fa-home"></i><span>home</span></a>
+        <a href="#" id="activityLink"><i class="fas fa-tasks"></i><span>Activity</span></a>
+        <a href="#" id="markAttendanceLink"><i class="fas fa-clipboard-check"></i><span>Mark Attendance</span></a>
+        <a href="#" id="viewAttendanceLink"><i class="fas fa-eye"></i><span>View Attendance</span></a>
+        <a id="contactLink" href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
+        <form id="logoutForm" method="POST" action="{% url 'logout_view' %}">
+         {% csrf_token %}
+         <button type="submit" id="logoutButton" class="logout-btn">
+             <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+         </button>
+         </form>
+    </nav>
+ 
+
+</div>
+
+<section class="courses">
+
+<div class="box-container" style="text-align: center;">
+   <header id="head">
+       Volunteer Dashboard
+   </header>
+   <br>
+   <div id="dashboardContent">
+      <div class="D-container container" id="D-container">
+        <h1 style="font-size: 19px; font-weight: bold;"  >WELCOME TO SW&D</h1>
+        <p style="font-size: 14px;">WE ARE THE VIT SOCIALS <br> WORKING FOR SOCIETY</p>
+      </div>
+   </div>
+
+   <div class="container" id="Activity" style="display: none;">
+      <div id="chooseActivity" class="content hidden">
+      {% if not volunteer.activity %}
+          <h2 class="dashboard-title" style="font-size: 18px;">Choose Activity</h2>
+          <form method="POST" action="{% url 'allotactivity' %}">
+              {% csrf_token %}
+              <select id="activitySelect" class="activity-select" name="activity" required>
+                  <option value="">Select an activity</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="seminar">Seminar</option>
+                  <option value="meetup">Meetup</option>
+              </select>
+              <button class="dashboard-btn" type="submit">Allot Activity</button>
+          </form>
+      {% else %}
+          <div>
+              <p>You have already chosen {{ volunteer.activity }}</p>
+          </div>
+      {% endif %}
+      </div>
+
+         <div id="viewAttendance" class="content hidden">
+            <h2 class="dashboard-title">View Attendance</h2>
+            <p style="font-size: 1.5rem;">Attendance data will be displayed here.</p>
+            <div>
+             
+            </div>
+        </div>
+ 
+        <div id="markAttendance" class="content hidden">
+         <h2 class="dashboard-title">Mark Attendance</h2>
+         <button class="dashboard-btn" onclick="startQRScanner()">Scan QR Code</button>
+         
+         <!-- Div where the camera will be displayed -->
+         <div id="qrReader" class="hidden" style="width: 300px; height: 300px;"></div>
+         
+         <!-- To show results of scanned QR codes -->
+         <div id="qr-reader-results"></div>
+
+         <h1 style="text-align: center;">Take a Geotagged Photo</h1>
+    
+    <form id="attendanceForm" method="POST" href="{% url 'mark_attendance' %}">
+        {% csrf_token %}
+        <input type="text" id="coord_name" name="coord_name" placeholder="Coordinator Name" disabled>
+        <input type="text" id="coord_prn" name="coord_prn" placeholder="Coordinator PRN" disabled>
+        <input type="text" id="vol_name" name="vol_name" placeholder="Volunteer Name" value="{{ user.username }}" disabled>
+        <input type="text" id="vol_prn" name="vol_prn" placeholder="Volunteer PRN" value="{{ user.id }}" disabled>
+        
+        <video id="video" autoplay></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <button type="button" id="capture-btn">Take Photo</button>
+        <img id="photo" alt="Your captured photo will appear here" style="display: block; margin: 20px auto; max-width: 100%;"/>
+        <input type="hidden" id="geo_photo" name="geo_photo">
+        <input type="hidden" id="actual_latitude" name="actual_latitude">
+        <input type="hidden" id="actual_longitude" name="actual_longitude">
+        
+        <button type="submit">Submit Attendance</button>
+    </form>
+    <p id="coordinates"></p>
+     </div>
+
+     </div>
+  </div>
+
+ </div>
+  
+
+   <div id="contactUsContent" class="content-section" style="display: none;">
+      <section class="contact">
+          <div  id="how" class="box-container" style="padding-top: 10%;">
+              <div class="box">
+                  <i class="fas fa-phone"></i>
+                  <h3>Phone Number</h3>
+                  <a href="tel:1234567890">123-456-7890</a>
+                  <a href="tel:1112223333">111-222-3333</a>
+              </div>
+
+              <div class="box">
+                  <i class="fas fa-envelope"></i>
+                  <h3>Email Address</h3>
+                  <a href="mailto:DJDGIFNGNI@gmail.com">JGFNSGI@gmail.com</a>
+                  <a href="mailto:JDGSNKFD@gmail.com">JFSHGUIHFS@gmail.com</a>
+              </div>
+
+              <div class="box">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <h3>Office Address</h3>
+                  <a href="#">Flat No. 1, A-1 Building,Jogeshwari,Mumbai,India-400104</a>
+              </div>
+          </div>
+      </section>
+   </div>
+</div>
+
+<div id="notification" class="notification">Logged out successfully!</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+      const dashboardContent = document.getElementById("dashboardContent");
+      const Activity = document.getElementById('Activity');
+      const contactUsContent = document.getElementById("contactUsContent");
+
+      const dashboardLink = document.getElementById("D_content");
+      const contactLink = document.getElementById("contactLink");
+      const activityLink = document.getElementById("activityLink");
+      const markAttendanceLink = document.getElementById("markAttendanceLink");
+      const viewAttendanceLink = document.getElementById("viewAttendanceLink");
+
+      const CA = document.getElementById('chooseActivity');
+      const viewAttendance = document.getElementById('viewAttendance');
+      const markAttendance = document.getElementById('markAttendance');
+
+      // Function to show content sections
+      function showContent(contentToShow) {
+         dashboardContent.style.display = "none";
+         Activity.style.display = "none";
+         contactUsContent.style.display = "none";
+         contentToShow.style.display = "block";
+      }
+
+      // Event listeners for navigation links
+      contactLink.addEventListener("click", (e) => {
+         e.preventDefault();
+         showContent(contactUsContent);
+      });
+
+      dashboardLink.addEventListener("click", (e) => {
+         e.preventDefault();
+         showContent(dashboardContent);
+      });
+
+      activityLink.addEventListener("click", (e) => {
+         e.preventDefault();
+         showContent(Activity);
+         showSection('chooseActivity');
+      });
+
+      markAttendanceLink.addEventListener("click", (e) => {
+         e.preventDefault();
+         showContent(Activity);
+         showSection('markAttendance');
+      });
+
+      viewAttendanceLink.addEventListener("click", (e) => {
+         e.preventDefault();
+         showContent(Activity);
+         showSection('viewAttendance');
+      });
+
+      // Show dashboard by default
+      showContent(dashboardContent);
+   });
+</script>
+
+<script>
+   function showSection(sectionId) {
+      document.querySelectorAll('.content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+   }
+
+   function allotActivity() {
+      const activity = document.getElementById('activitySelect').value;
+      if (activity) {
+         alert(`Activity '${activity}' has been allotted.`);
+      //   showSection('mainOptions');
+      } else {
+         alert('Please select an activity first.');
+      }
+   }
+</script>
+
+<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<script>
+  // Sidebar Toggle Functionality
+  let sideBar = document.querySelector('.side-bar');
+  let menuBtn = document.getElementById('menu-btn');
+  let closeBtn = document.getElementById('close-btn');
+  let body = document.body;
+  
+  // Toggle Sidebar on Menu Button Click
+  menuBtn?.addEventListener('click', () => {
+     sideBar.classList.toggle('active'); // Show/hide sidebar
+     body.classList.toggle('active'); // Adjust main content
+  });
+  
+  // Close Sidebar on Close Button Click
+  closeBtn?.addEventListener('click', () => {
+     sideBar.classList.remove('active'); // Hide sidebar
+     body.classList.remove('active'); // Reset main content
+  });
+  
+  // Close Sidebar when window is resized (optional, to handle desktop/mobile transitions)
+  window.addEventListener('resize', () => {
+     if (window.innerWidth >= 1200) {
+        sideBar.classList.remove('active');
+        body.classList.remove('active');
+     }
+  });
+
+function startQRScanner() {
+   const qrReader = document.getElementById('qrReader');
+   qrReader.classList.remove('hidden');
+
+   const html5QrCode = new Html5Qrcode("qrReader");
+   const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+   html5QrCode.start(
+         { facingMode: "environment" },
+         config,
+         onScanSuccess
+   ).catch(err => {
+         console.error(`QR Code scanning failed: ${err}`);
+         alert("Failed to start QR scanner. Please make sure you've granted camera permissions.");
+   });
+}
+
+   function onScanSuccess(decodedText, decodedResult) {
+      const resultElement = document.getElementById('qr-reader-results');
+      
+      // Parse the decodedText
+      const prnMatch = decodedText.match(/PRN:\s*(\S+)/);
+      const activityMatch = decodedText.match(/Activity:\s*(\S+)/);
+      
+      if (prnMatch && activityMatch) {
+          const coord_prn = prnMatch[1];
+          const activity = activityMatch[1];
+  
+          // Display the results
+          resultElement.innerHTML = `<p>Scanned QR Code - PRN: ${coord_prn}, Activity: ${activity}</p>`;
+          
+          // Send data to the server
+          sendAttendanceData(coord_prn, activity);
+          
+          // Stop scanning after successful scan
+          Html5Qrcode.stop();
+          document.getElementById('qrReader').classList.add('hidden');
+      } else {
+          resultElement.innerHTML = "<p>Invalid QR Code format.</p>";
+      }
+  }
+  
+
+  function sendAttendanceData(coord_prn, activity) {
+   fetch('{% url 'mark_attendance' %}', {  // Change to your actual URL
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json',
+           'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for Django
+       },
+       body: JSON.stringify({
+           coord_prn: coord_prn,
+           activity: activity,
+       })
+   })
+   .then(response => {
+       if (response.ok) {
+           alert('Attendance marked successfully!');
+       } else {
+           alert('Failed to mark attendance.');
+       }
+   })
+   .catch(error => {
+       console.error('Error:', error);
+   });
+}
+
+</script>
+
+<script>
+   const video = document.getElementById('video');
+   const canvas = document.getElementById('canvas');
+   const captureBtn = document.getElementById('capture-btn');
+   const photo = document.getElementById('photo');
+   const coordinates = document.getElementById('coordinates');
+
+   // Access the camera
+   navigator.mediaDevices.getUserMedia({ video: true })
+       .then(stream => {
+           video.srcObject = stream;
+       })
+       .catch(err => {
+           console.error('Error accessing camera: ', err);
+       });
+
+   captureBtn.addEventListener('click', () => {
+       canvas.width = video.videoWidth;
+       canvas.height = video.videoHeight;
+       const context = canvas.getContext('2d');
+       context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+       if (navigator.geolocation) {
+           navigator.geolocation.getCurrentPosition(position => {
+               const lat = position.coords.latitude;
+               const lon = position.coords.longitude;
+
+               // Draw the geolocation on the image
+               context.font = '20px Arial';
+               context.fillStyle = 'yellow';
+               context.fillText(`Lat: ${lat.toFixed(6)}`, 10, canvas.height - 60);
+               context.fillText(`Lon: ${lon.toFixed(6)}`, 10, canvas.height - 30);
+
+               // Convert the canvas to a data URL and display the image
+               const imageDataUrl = canvas.toDataURL('image/png');
+               photo.src = imageDataUrl;
+
+               // Store the coordinates in hidden fields
+               document.getElementById('actual_latitude').value = lat;
+               document.getElementById('actual_longitude').value = lon;
+
+           }, err => {
+               console.error('Error getting location: ', err);
+               coordinates.innerText = 'Could not retrieve location';
+           });
+       } else {
+           coordinates.innerText = 'Geolocation is not supported by your browser';
+       }
+   });
+
+   document.getElementById('attendanceForm').onsubmit = function(event) {
+       event.preventDefault(); // Prevent default form submission
+
+       const formData = new FormData(this);
+       const canvas = document.getElementById('canvas');
+
+       // Convert the canvas to a Blob and append to the FormData
+       canvas.toBlob(blob => {
+           formData.append('geo_photo', blob, 'photo.png');
+           submitForm(formData); // Call the function to submit form data
+       }, 'image/png');
+   };
+
+   function submitForm(formData) {
+       fetch('{% url 'mark_attendance' %}', {
+           method: 'POST',
+           body: formData,
+       })
+       .then(response => response.json())
+       .then(data => {
+           alert(data.message || data.error);
+       })
+       .catch(error => {
+           console.error('Error:', error);
+       });
+   }
+</script>
+
+
+<script src="js/script.js"></script>
+
+  
+</body>
+</html>
